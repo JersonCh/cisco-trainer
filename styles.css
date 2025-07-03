@@ -413,6 +413,98 @@ header p {
     color: #ffeb3b;
 }
 
+/* Estilos adicionales para la nueva estructura */
+
+/* Header con botón de regreso */
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.back-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Sidebar en ejercicios */
+body:has(.sidebar) .container {
+    margin-left: 350px;
+    transition: margin-left 0.3s ease;
+}
+
+body:has(.sidebar) header {
+    margin-left: 350px;
+    transition: margin-left 0.3s ease;
+}
+
+/* Ejercicio activo en sidebar */
+.exercise-link.active {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border-left-color: #f39c12;
+}
+
+.exercise-link.active .exercise-number {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.exercise-link.active .exercise-title,
+.exercise-link.active .exercise-description {
+    color: white;
+}
+
+/* Responsive para ejercicios con sidebar */
+@media (max-width: 768px) {
+    body:has(.sidebar) .container {
+        margin-left: 0;
+    }
+    
+    body:has(.sidebar) header {
+        margin-left: 0;
+        padding-top: 70px;
+    }
+    
+    .back-btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+    
+    .header-content {
+        gap: 10px;
+    }
+    
+    .header-content h1 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .back-btn {
+        align-self: flex-start;
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {

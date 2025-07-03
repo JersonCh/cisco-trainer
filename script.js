@@ -6,9 +6,19 @@ class CiscoTrainer {
         this.mistakes = [];
         this.isHardMode = false; // Nueva propiedad para modo difícil
         
+        // Forzar scroll al inicio inmediatamente
+        this.forceScrollToTop();
+        
         this.initializeAnswers();
         this.setupEventListeners();
         this.updateProgress();
+        this.initializeSidebar();
+    }
+
+    forceScrollToTop() {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
     }
 
     initializeAnswers() {
@@ -148,59 +158,34 @@ class CiscoTrainer {
         inputs.forEach(input => {
             const inputId = input.id;
             const userAnswer = input.value.trim();
-            
-            // En modo difícil, tratamos los campos de manera especial
-            if (this.isHardMode && inputId === 'input-11b') {
-                // En modo difícil, input-11b debe estar vacío para ser correcto
-                const isCorrect = userAnswer === '';
-                
-                if (isCorrect) {
-                    this.score++;
-                    input.classList.remove('incorrect');
-                    input.classList.add('correct');
-                    this.showFeedback(input, true, '(vacío - correcto)');
-                } else {
-                    input.classList.remove('correct');
-                    input.classList.add('incorrect');
-                    this.showFeedback(input, false, userAnswer);
-                    this.mistakes.push({
-                        question: 'Campo adicional en modo difícil',
-                        userAnswer: userAnswer || '(vacío)',
-                        correctAnswer: '(debe estar vacío en modo difícil)'
-                    });
-                }
-                return;
-            }
-            
             const isCorrect = this.isAnswerCorrect(inputId, userAnswer);
             
             if (isCorrect) {
-                this.score++;
                 input.classList.remove('incorrect');
                 input.classList.add('correct');
-                this.showFeedback(input, true, userAnswer);
+                this.score++;
             } else {
                 input.classList.remove('correct');
                 input.classList.add('incorrect');
-                this.showFeedback(input, false, userAnswer);
-                
-                // Registrar error
-                const correctAnswer = this.correctAnswers[inputId];
-                const correctAnswerText = Array.isArray(correctAnswer) ? correctAnswer[0] : correctAnswer;
                 this.mistakes.push({
-                    question: this.getQuestionDescription(inputId),
-                    userAnswer: userAnswer || '(vacío)',
-                    correctAnswer: correctAnswerText
+                    question: inputId,
+                    userAnswer: userAnswer,
+                    correctAnswer: this.correctAnswers[inputId]
                 });
             }
+            
+            this.showFeedback(input, isCorrect, userAnswer);
         });
         
         this.updateProgress();
         this.showResults();
         
-        // Efectos de celebración
-        if (this.score === this.totalQuestions) {
-            this.celebrateSuccess();
+        // Actualizar progreso global
+        const percentage = (this.score / this.totalQuestions) * 100;
+        const completed = percentage >= 70; // 70% para considerar completado
+        
+        if (window.CiscoTrainerApp) {
+            window.CiscoTrainerApp.updateProgress(16, completed, Math.round(percentage));
         }
     }
 
@@ -563,6 +548,27 @@ class CiscoTrainer {
         
         // Actualizar progreso
         this.updateProgress();
+    }
+
+    // Método para inicializar sidebar si existe
+    initializeSidebar() {
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+        
+        if (sidebarToggle && sidebar) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+
+            // Cerrar sidebar al hacer click fuera en móvil
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    if (!sidebar.contains(e.target) && sidebar.classList.contains('open')) {
+                        sidebar.classList.remove('open');
+                    }
+                }
+            });
+        }
     }
 }
 
