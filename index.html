@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica de Comandos Cisco - Configuración SSH</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌐 Práctica de Comandos Cisco</h1>
+            <p>Completa los espacios en blanco para configurar acceso SSH en un switch</p>
+        </header>
+
+        <div class="exercise-container">
+            <div class="exercise-header">
+                <h2>Ejercicio 16 – Configurar acceso SSH en un switch</h2>
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <p class="score">Puntuación: <span id="score">0</span>/11</p>
+            </div>
+
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="terminal-controls">
+                        <span class="control red"></span>
+                        <span class="control yellow"></span>
+                        <span class="control green"></span>
+                    </div>
+                    <span class="terminal-title">Cisco Switch Console</span>
+                </div>
+                
+                <div class="terminal-content">
+                    <div class="command-line">
+                        <span class="prompt">Switch></span>
+                        <input type="text" class="command-input" data-answer="enable" placeholder="__" id="input-1">
+                        <span class="comment"># Ir al modo privilegiado</span>
+                        <span class="feedback" id="feedback-1"></span>
+                    </div>
+
+                    <div class="command-line">
+                        <span class="prompt">Switch#</span>
+                        <span>configure</span>
+                        <input type="text" class="command-input" data-answer="terminal" placeholder="__" id="input-2">
+                        <span class="comment"># Entrar al modo de configuración global</span>
+                        <span class="feedback" id="feedback-2"></span>
+                    </div>
+
+                    <div class="command-line">
+                        <span class="prompt">Switch(config)#</span>
+                        <span>hostname</span>
+                        <input type="text" class="command-input" data-answer="S1" placeholder="__" id="input-3">
+                        <span class="comment"># Asignar nombre al switch</span>
+                        <span class="feedback" id="feedback-3"></span>
+                    </div>
+
+                    <div class="command-line">
+                        <span class="prompt">S1(config)#</span>
+                        <span>ip</span>
+                        <input type="text" class="command-input" data-answer="domain-name" placeholder="__-name" id="input-4">
+                        <span>leyva.local</span>
+                        <span class="comment"># Asignar dominio</span>
+                        <span class="feedback" id="feedback-4"></span>
+                    </div>
+
+                    <div class="command-line">
+                        <span class="prompt">S1(config)#</span>
+                        <input type="text" class="command-input" data-answer="crypto" placeholder="__" id="input-5">
+                        <span>key generate rsa</span>
+                        <span class="comment"># Generar clave RSA</span>
+                        <span class="feedback" id="feedback-5"></span>
+                    </div>
+
+                    <div class="command-line">
+                        <span class="prompt">How many bits in the modulus:</span>
+                        <input type="text" class="command-input" data-answer="1024" placeholder="__" id="input-6">
+                        <span class="comment"># Tamaño de la clave</span>
+                        <span class="feedback" id="feedback-6"></span>
+                    </div>
+
+                    <div class="command-line">
+                        <span class="prompt">S1(config)#</span>
+                        <span>username admin</span>
+                        <input type="text" class="command-input" data-answer="secret" placeholder="__" id="input-7">
+                        <span>Adm1nP@55</span>
+                        <span class="comment"># Crear usuario admin</span>
+                        <span class="feedback" id="feedback-7"></span>
+                    </div>
+
+                    <div class="command-line">
+                        <span class="prompt">S1(config)#</span>
+                        <span>line vty 0</span>
+                        <input type="text" class="command-input" data-answer="4" placeholder="__" id="input-8">
+                        <span class="comment"># Entrar a líneas VTY</span>
+                        <span class="feedback" id="feedback-8"></span>
+                    </div>
+
+                    <div class="command-line">
+                        <span class="prompt">S1(config-line)#</span>
+                        <span>transport</span>
+                        <input type="text" class="command-input" data-answer="input" placeholder="__" id="input-9">
+                        <span>ssh</span>
+                        <span class="comment"># Permitir solo SSH</span>
+                        <span class="feedback" id="feedback-9"></span>
+                    </div>
+
+                    <div class="command-line">
+                        <span class="prompt">S1(config-line)#</span>
+                        <span>login</span>
+                        <input type="text" class="command-input" data-answer="local" placeholder="__" id="input-10">
+                        <span class="comment"># Usar base de datos local</span>
+                        <span class="feedback" id="feedback-10"></span>
+                    </div>
+
+                    <div class="command-line">
+                        <span class="prompt">S1#</span>
+                        <span>copy</span>
+                        <input type="text" class="command-input" data-answer="running-config" placeholder="__" id="input-11a">
+                        <input type="text" class="command-input" data-answer="startup-config" placeholder="__" id="input-11b">
+                        <span class="comment"># Guardar configuración</span>
+                        <span class="feedback" id="feedback-11"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="checkAnswers" class="btn btn-primary">Verificar Respuestas</button>
+                <button id="showHints" class="btn btn-secondary">Mostrar Pistas</button>
+                <button id="reset" class="btn btn-danger">Reiniciar</button>
+            </div>
+
+            <div class="hints" id="hints" style="display: none;">
+                <h3>💡 Pistas:</h3>
+                <ul>
+                    <li><strong>enable:</strong> Comando para entrar al modo privilegiado</li>
+                    <li><strong>terminal:</strong> Parámetro para entrar al modo de configuración global</li>
+                    <li><strong>S1:</strong> Nombre del switch</li>
+                    <li><strong>domain-name:</strong> Comando para asignar dominio</li>
+                    <li><strong>crypto:</strong> Comando para operaciones criptográficas</li>
+                    <li><strong>1024:</strong> Tamaño estándar de clave RSA</li>
+                    <li><strong>secret:</strong> Comando para crear contraseña encriptada</li>
+                    <li><strong>4:</strong> Líneas VTY del 0 al 4 (5 sesiones simultáneas)</li>
+                    <li><strong>input:</strong> Especifica el protocolo de entrada</li>
+                    <li><strong>local:</strong> Usar base de datos local de usuarios</li>
+                    <li><strong>running-config / startup-config:</strong> Configuración en memoria / en NVRAM</li>
+                </ul>
+            </div>
+
+            <div class="results" id="results" style="display: none;">
+                <h3>🎉 ¡Resultados!</h3>
+                <p id="finalScore"></p>
+                <div id="mistakes"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

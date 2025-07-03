@@ -1,0 +1,42 @@
+[2:16 p.m., 3/7/2025] Elvis Leyva: Switch> __                                # Ir al modo privilegiado
+Switch# configure __                      # Entrar al modo de configuración global
+Switch(config)# hostname __               # Asignar nombre al switch
+Switch(config)# ip __-name leyva.local    # Asignar dominio
+Switch(config)# __ key generate rsa       # Generar clave RSA
+How many bits in the modulus: __          # Tamaño de la clave
+Switch(config)# username admin __ Adm1nP@55  # Crear usuario admin
+Switch(config)# line vty 0 __             # Entrar a líneas VTY
+Switch(config-line)# transport __ ssh     # Permitir solo SSH
+Switch(config-line)# login __             # Usar base de datos local
+Switch# copy __ __                    # Guardar configuración
+[2:16 p.m., 3/7/2025] Elvis Leyva: # Ir al modo privilegiado
+
+# Entrar al modo de configuración global
+
+# Asignar nombre al switch
+
+# Asignar dominio para el switch
+
+# Generar clave RSA de 1024 bits
+
+# Crear usuario "admin" con contraseña segura
+
+# Entrar a las líneas VTY
+
+# Permitir solo SSH
+
+# Activar login con base de datos local
+
+# Guardar configuración
+[2:16 p.m., 3/7/2025] Elvis Leyva: Ejercicio 16 – Configurar acceso SSH en un switch
+[2:19 p.m., 3/7/2025] Elvis Leyva: Switch> enable
+Switch# configure terminal
+Switch(config)# hostname S1
+S1(config)# ip domain-name leyva.local
+S1(config)# crypto key generate rsa
+How many bits in the modulus: 1024
+S1(config)# username admin secret Adm1nP@55
+S1(config)# line vty 0 4
+S1(config-line)# transport input ssh
+S1(config-line)# login local
+S1# copy running-config startup-config
