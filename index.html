@@ -16,6 +16,10 @@
         <div class="exercise-container">
             <div class="exercise-header">
                 <h2>Ejercicio 16 – Configurar acceso SSH en un switch</h2>
+                <div class="difficulty-selector">
+                    <button id="easyMode" class="difficulty-btn active">🟢 Modo Fácil</button>
+                    <button id="hardMode" class="difficulty-btn">🔴 Modo Difícil</button>
+                </div>
                 <div class="progress-bar">
                     <div class="progress" id="progress"></div>
                 </div>
@@ -35,90 +39,93 @@
                 <div class="terminal-content">
                     <div class="command-line">
                         <span class="prompt">Switch></span>
-                        <input type="text" class="command-input" data-answer="enable" placeholder="__" id="input-1">
+                        <span class="easy-text">__</span>
+                        <input type="text" class="command-input" data-answer="enable" data-answer-hard="enable" placeholder="__" id="input-1">
                         <span class="comment"># Ir al modo privilegiado</span>
                         <span class="feedback" id="feedback-1"></span>
                     </div>
 
                     <div class="command-line">
                         <span class="prompt">Switch#</span>
-                        <span>configure</span>
-                        <input type="text" class="command-input" data-answer="terminal" placeholder="__" id="input-2">
+                        <span class="easy-text">configure</span>
+                        <input type="text" class="command-input" data-answer="terminal" data-answer-hard="configure terminal" placeholder="__" id="input-2">
                         <span class="comment"># Entrar al modo de configuración global</span>
                         <span class="feedback" id="feedback-2"></span>
                     </div>
 
                     <div class="command-line">
                         <span class="prompt">Switch(config)#</span>
-                        <span>hostname</span>
-                        <input type="text" class="command-input" data-answer="S1" placeholder="__" id="input-3">
+                        <span class="easy-text">hostname</span>
+                        <input type="text" class="command-input" data-answer="S1" data-answer-hard="hostname S1" placeholder="__" id="input-3">
                         <span class="comment"># Asignar nombre al switch</span>
                         <span class="feedback" id="feedback-3"></span>
                     </div>
 
                     <div class="command-line">
                         <span class="prompt">S1(config)#</span>
-                        <span>ip</span>
-                        <input type="text" class="command-input" data-answer="domain-name" placeholder="__-name" id="input-4">
-                        <span>leyva.local</span>
+                        <span class="easy-text">ip</span>
+                        <input type="text" class="command-input" data-answer="domain-name" data-answer-hard="ip domain-name leyva.local" placeholder="__-name" id="input-4">
+                        <span class="easy-text">leyva.local</span>
                         <span class="comment"># Asignar dominio</span>
                         <span class="feedback" id="feedback-4"></span>
                     </div>
 
                     <div class="command-line">
                         <span class="prompt">S1(config)#</span>
-                        <input type="text" class="command-input" data-answer="crypto" placeholder="__" id="input-5">
-                        <span>key generate rsa</span>
+                        <span class="easy-text"></span>
+                        <input type="text" class="command-input" data-answer="crypto" data-answer-hard="crypto key generate rsa" placeholder="__" id="input-5">
+                        <span class="easy-text">key generate rsa</span>
                         <span class="comment"># Generar clave RSA</span>
                         <span class="feedback" id="feedback-5"></span>
                     </div>
 
                     <div class="command-line">
                         <span class="prompt">How many bits in the modulus:</span>
-                        <input type="text" class="command-input" data-answer="1024" placeholder="__" id="input-6">
+                        <input type="text" class="command-input" data-answer="1024" data-answer-hard="1024" placeholder="__" id="input-6">
                         <span class="comment"># Tamaño de la clave</span>
                         <span class="feedback" id="feedback-6"></span>
                     </div>
 
                     <div class="command-line">
                         <span class="prompt">S1(config)#</span>
-                        <span>username admin</span>
-                        <input type="text" class="command-input" data-answer="secret" placeholder="__" id="input-7">
-                        <span>Adm1nP@55</span>
+                        <span class="easy-text">username admin</span>
+                        <input type="text" class="command-input" data-answer="secret" data-answer-hard="username admin secret Adm1nP@55" placeholder="__" id="input-7">
+                        <span class="easy-text">Adm1nP@55</span>
                         <span class="comment"># Crear usuario admin</span>
                         <span class="feedback" id="feedback-7"></span>
                     </div>
 
                     <div class="command-line">
                         <span class="prompt">S1(config)#</span>
-                        <span>line vty 0</span>
-                        <input type="text" class="command-input" data-answer="4" placeholder="__" id="input-8">
+                        <span class="easy-text">line vty 0</span>
+                        <input type="text" class="command-input" data-answer="4" data-answer-hard="line vty 0 4" placeholder="__" id="input-8">
                         <span class="comment"># Entrar a líneas VTY</span>
                         <span class="feedback" id="feedback-8"></span>
                     </div>
 
                     <div class="command-line">
                         <span class="prompt">S1(config-line)#</span>
-                        <span>transport</span>
-                        <input type="text" class="command-input" data-answer="input" placeholder="__" id="input-9">
-                        <span>ssh</span>
+                        <span class="easy-text">transport</span>
+                        <input type="text" class="command-input" data-answer="input" data-answer-hard="transport input ssh" placeholder="__" id="input-9">
+                        <span class="easy-text">ssh</span>
                         <span class="comment"># Permitir solo SSH</span>
                         <span class="feedback" id="feedback-9"></span>
                     </div>
 
                     <div class="command-line">
                         <span class="prompt">S1(config-line)#</span>
-                        <span>login</span>
-                        <input type="text" class="command-input" data-answer="local" placeholder="__" id="input-10">
+                        <span class="easy-text">login</span>
+                        <input type="text" class="command-input" data-answer="local" data-answer-hard="login local" placeholder="__" id="input-10">
                         <span class="comment"># Usar base de datos local</span>
                         <span class="feedback" id="feedback-10"></span>
                     </div>
 
                     <div class="command-line">
                         <span class="prompt">S1#</span>
-                        <span>copy</span>
-                        <input type="text" class="command-input" data-answer="running-config" placeholder="__" id="input-11a">
-                        <input type="text" class="command-input" data-answer="startup-config" placeholder="__" id="input-11b">
+                        <span class="easy-text">copy</span>
+                        <input type="text" class="command-input" data-answer="running-config" data-answer-hard="copy running-config startup-config" placeholder="__" id="input-11a">
+                        <span class="easy-text easy-text-second"></span>
+                        <input type="text" class="command-input easy-text-second" data-answer="startup-config" data-answer-hard="" placeholder="__" id="input-11b">
                         <span class="comment"># Guardar configuración</span>
                         <span class="feedback" id="feedback-11"></span>
                     </div>

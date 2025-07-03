@@ -1,9 +1,10 @@
 class CiscoTrainer {
     constructor() {
         this.score = 0;
-        this.totalQuestions = 11; // Correcto: son 11 campos individuales
+        this.totalQuestions = 11;
         this.answers = new Map();
         this.mistakes = [];
+        this.isHardMode = false; // Nueva propiedad para modo difícil
         
         this.initializeAnswers();
         this.setupEventListeners();
@@ -11,11 +12,11 @@ class CiscoTrainer {
     }
 
     initializeAnswers() {
-        // Definir las respuestas correctas
-        this.correctAnswers = {
+        // Respuestas para modo fácil
+        this.correctAnswersEasy = {
             'input-1': 'enable',
             'input-2': 'terminal',
-            'input-3': ['S1', 's1'], // Permitir mayúsculas y minúsculas
+            'input-3': ['S1', 's1'],
             'input-4': 'domain-name',
             'input-5': 'crypto',
             'input-6': '1024',
@@ -26,6 +27,25 @@ class CiscoTrainer {
             'input-11a': 'running-config',
             'input-11b': 'startup-config'
         };
+
+        // Respuestas para modo difícil (comandos completos)
+        this.correctAnswersHard = {
+            'input-1': 'enable',
+            'input-2': 'configure terminal',
+            'input-3': 'hostname S1',
+            'input-4': 'ip domain-name leyva.local',
+            'input-5': 'crypto key generate rsa',
+            'input-6': '1024',
+            'input-7': 'username admin secret Adm1nP@55',
+            'input-8': 'line vty 0 4',
+            'input-9': 'transport input ssh',
+            'input-10': 'login local',
+            'input-11a': 'copy running-config startup-config',
+            'input-11b': 'copy running-config startup-config' // En modo difícil, ambos inputs aceptan el comando completo
+        };
+
+        // Usar respuestas fáciles por defecto
+        this.correctAnswers = this.correctAnswersEasy;
     }
 
     setupEventListeners() {
@@ -34,7 +54,11 @@ class CiscoTrainer {
         document.getElementById('showHints').addEventListener('click', () => this.toggleHints());
         document.getElementById('reset').addEventListener('click', () => this.resetExercise());
 
-        // Event listeners para los inputs - verificación en tiempo real
+        // Nuevos event listeners para botones de dificultad
+        document.getElementById('easyMode').addEventListener('click', () => this.setEasyMode());
+        document.getElementById('hardMode').addEventListener('click', () => this.setHardMode());
+
+        // Event listeners para los inputs
         const inputs = document.querySelectorAll('.command-input');
         inputs.forEach(input => {
             input.addEventListener('input', (e) => this.handleInputChange(e));
@@ -124,6 +148,30 @@ class CiscoTrainer {
         inputs.forEach(input => {
             const inputId = input.id;
             const userAnswer = input.value.trim();
+            
+            // En modo difícil, tratamos los campos de manera especial
+            if (this.isHardMode && inputId === 'input-11b') {
+                // En modo difícil, input-11b debe estar vacío para ser correcto
+                const isCorrect = userAnswer === '';
+                
+                if (isCorrect) {
+                    this.score++;
+                    input.classList.remove('incorrect');
+                    input.classList.add('correct');
+                    this.showFeedback(input, true, '(vacío - correcto)');
+                } else {
+                    input.classList.remove('correct');
+                    input.classList.add('incorrect');
+                    this.showFeedback(input, false, userAnswer);
+                    this.mistakes.push({
+                        question: 'Campo adicional en modo difícil',
+                        userAnswer: userAnswer || '(vacío)',
+                        correctAnswer: '(debe estar vacío en modo difícil)'
+                    });
+                }
+                return;
+            }
+            
             const isCorrect = this.isAnswerCorrect(inputId, userAnswer);
             
             if (isCorrect) {
@@ -150,29 +198,46 @@ class CiscoTrainer {
         this.updateProgress();
         this.showResults();
         
-        // Efectos de sonido simulados con vibraciones del navegador
+        // Efectos de celebración
         if (this.score === this.totalQuestions) {
             this.celebrateSuccess();
         }
     }
 
     getQuestionDescription(inputId) {
-        const descriptions = {
-            'input-1': 'Comando para modo privilegiado',
-            'input-2': 'Parámetro para configuración global',
-            'input-3': 'Nombre del switch',
-            'input-4': 'Comando para dominio',
-            'input-5': 'Comando para criptografía',
-            'input-6': 'Tamaño de clave RSA',
-            'input-7': 'Comando para contraseña segura',
-            'input-8': 'Número de líneas VTY',
-            'input-9': 'Parámetro de transporte',
-            'input-10': 'Tipo de autenticación',
-            'input-11a': 'Configuración origen',
-            'input-11b': 'Configuración destino'
-        };
-        
-        return descriptions[inputId] || 'Comando desconocido';
+        if (this.isHardMode) {
+            const descriptionsHard = {
+                'input-1': 'Comando para modo privilegiado',
+                'input-2': 'Comando completo para configuración',
+                'input-3': 'Comando completo para nombre del switch',
+                'input-4': 'Comando completo para dominio',
+                'input-5': 'Comando completo para generar clave RSA',
+                'input-6': 'Tamaño de clave RSA',
+                'input-7': 'Comando completo para crear usuario',
+                'input-8': 'Comando completo para líneas VTY',
+                'input-9': 'Comando completo para protocolo SSH',
+                'input-10': 'Comando completo para autenticación local',
+                'input-11a': 'Comando completo para guardar configuración',
+                'input-11b': 'Campo adicional (debe estar vacío en modo difícil)'
+            };
+            return descriptionsHard[inputId] || 'Comando desconocido';
+        } else {
+            const descriptions = {
+                'input-1': 'Comando para modo privilegiado',
+                'input-2': 'Parámetro para configuración global',
+                'input-3': 'Nombre del switch',
+                'input-4': 'Comando para dominio',
+                'input-5': 'Comando para criptografía',
+                'input-6': 'Tamaño de clave RSA',
+                'input-7': 'Comando para contraseña segura',
+                'input-8': 'Número de líneas VTY',
+                'input-9': 'Parámetro de transporte',
+                'input-10': 'Tipo de autenticación',
+                'input-11a': 'Configuración origen',
+                'input-11b': 'Configuración destino'
+            };
+            return descriptions[inputId] || 'Comando desconocido';
+        }
     }
 
     updateProgress() {
@@ -331,7 +396,151 @@ class CiscoTrainer {
             return;
         }
         
-        // Limpiar todos los inputs
+        this.resetExerciseInternal();
+        
+        // Enfocar primer input
+        const firstInput = document.getElementById('input-1');
+        if (firstInput) firstInput.focus();
+        
+        // Scroll al inicio
+        const terminalWindow = document.querySelector('.terminal-window');
+        if (terminalWindow) {
+            terminalWindow.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    setEasyMode() {
+        this.isHardMode = false;
+        this.correctAnswers = this.correctAnswersEasy;
+        this.totalQuestions = 11; // En modo fácil son 11 preguntas
+        
+        // Actualizar UI
+        document.body.classList.remove('hard-mode');
+        document.getElementById('easyMode').classList.add('active');
+        document.getElementById('hardMode').classList.remove('active', 'hard-active');
+        
+        // Actualizar placeholders y limpiar inputs
+        this.updatePlaceholders();
+        this.resetExerciseInternal();
+        
+        // Mostrar mensaje
+        this.showModeChangeMessage('🟢 Modo Fácil Activado', 'Completa las palabras faltantes en los comandos');
+    }
+
+    setHardMode() {
+        this.isHardMode = true;
+        this.correctAnswers = this.correctAnswersHard;
+        this.totalQuestions = 11; // En modo difícil también son 11 preguntas
+        
+        // Actualizar UI
+        document.body.classList.add('hard-mode');
+        document.getElementById('hardMode').classList.add('active', 'hard-active');
+        document.getElementById('easyMode').classList.remove('active');
+        
+        // Actualizar placeholders y limpiar inputs
+        this.updatePlaceholders();
+        this.resetExerciseInternal();
+        
+        // Mostrar mensaje
+        this.showModeChangeMessage('🔴 Modo Difícil Activado', 'Escribe los comandos completos desde cero');
+    }
+
+    updatePlaceholders() {
+        const inputs = document.querySelectorAll('.command-input');
+        inputs.forEach(input => {
+            if (this.isHardMode) {
+                if (input.id === 'input-11b') {
+                    input.style.display = 'none'; // Ocultar segundo input en modo difícil
+                } else {
+                    input.style.display = 'inline-block';
+                    input.placeholder = 'Escribe el comando completo...';
+                }
+            } else {
+                input.style.display = 'inline-block';
+                if (input.id === 'input-4') {
+                    input.placeholder = '__-name';
+                } else {
+                    input.placeholder = '__';
+                }
+            }
+        });
+        
+        // Actualizar score display
+        const scoreElement = document.querySelector('.score');
+        if (scoreElement) {
+            scoreElement.innerHTML = `Puntuación: <span id="score">0</span>/${this.totalQuestions}`;
+        }
+    }
+
+    showModeChangeMessage(title, description) {
+        // Crear mensaje temporal
+        const message = document.createElement('div');
+        message.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${this.isHardMode ? 'linear-gradient(135deg, #e74c3c, #c0392b)' : 'linear-gradient(135deg, #27ae60, #2ecc71)'};
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            font-weight: bold;
+            animation: slideInRight 0.3s ease-out;
+        `;
+        
+        message.innerHTML = `
+            <div style="font-size: 16px; margin-bottom: 5px;">${title}</div>
+            <div style="font-size: 12px; opacity: 0.9;">${description}</div>
+        `;
+        
+        document.body.appendChild(message);
+        
+        // Remover mensaje después de 3 segundos
+        setTimeout(() => {
+            if (message.parentNode) {
+                message.style.animation = 'slideOutRight 0.3s ease-in forwards';
+                setTimeout(() => {
+                    if (message.parentNode) {
+                        message.parentNode.removeChild(message);
+                    }
+                }, 300);
+            }
+        }, 3000);
+        
+        // Agregar animaciones CSS si no existen
+        if (!document.getElementById('mode-animations')) {
+            const style = document.createElement('style');
+            style.id = 'mode-animations';
+            style.textContent = `
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+                
+                @keyframes slideOutRight {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    resetExerciseInternal() {
+        // Limpiar todos los inputs sin confirmación (para cambio de modo)
         const inputs = document.querySelectorAll('.command-input');
         inputs.forEach(input => {
             input.value = '';
@@ -344,18 +553,16 @@ class CiscoTrainer {
         this.mistakes = [];
         
         // Ocultar resultados y pistas
-        document.getElementById('results').style.display = 'none';
-        document.getElementById('hints').style.display = 'none';
-        document.getElementById('showHints').textContent = 'Mostrar Pistas';
+        const resultsDiv = document.getElementById('results');
+        const hintsDiv = document.getElementById('hints');
+        const showHintsBtn = document.getElementById('showHints');
+        
+        if (resultsDiv) resultsDiv.style.display = 'none';
+        if (hintsDiv) hintsDiv.style.display = 'none';
+        if (showHintsBtn) showHintsBtn.textContent = 'Mostrar Pistas';
         
         // Actualizar progreso
         this.updateProgress();
-        
-        // Enfocar primer input
-        document.getElementById('input-1').focus();
-        
-        // Scroll al inicio
-        document.querySelector('.terminal-window').scrollIntoView({ behavior: 'smooth' });
     }
 }
 

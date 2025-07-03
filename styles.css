@@ -332,6 +332,87 @@ header p {
     border-left: 3px solid #e74c3c;
 }
 
+/* Selector de dificultad */
+.difficulty-selector {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.difficulty-btn {
+    padding: 10px 20px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    background: #f8f9fa;
+    color: #2c3e50;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.difficulty-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.difficulty-btn.active {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border-color: #2980b9;
+}
+
+.difficulty-btn.hard-active {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    border-color: #c0392b;
+}
+
+/* Modo difícil - ocultar texto de ayuda */
+.hard-mode .easy-text {
+    display: none !important;
+}
+
+.hard-mode .easy-text-second {
+    display: none !important;
+}
+
+.hard-mode .command-input {
+    min-width: 200px;
+}
+
+.hard-mode .command-line {
+    gap: 5px;
+}
+
+/* Animación de transición entre modos */
+.easy-text {
+    transition: opacity 0.3s ease;
+}
+
+.hard-mode .easy-text {
+    opacity: 0;
+}
+
+/* Estilos especiales para modo difícil */
+.hard-mode .terminal-window {
+    border: 2px solid #e74c3c;
+}
+
+.hard-mode .terminal-header {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.hard-mode .terminal-title {
+    color: #fff;
+}
+
+.hard-mode .terminal-title::after {
+    content: " - MODO DIFÍCIL";
+    font-weight: bold;
+    color: #ffeb3b;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {
