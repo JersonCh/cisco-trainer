@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 24 - Banner y Consola | Cisco Trainer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="main-styles.css">
+    <script src="scroll-control.js"></script>
+</head>
+<body class="exercise-page">
+    <div class="app-container">
+        <!-- Barra lateral -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>🌐 Cisco Trainer</h2>
+                <button class="sidebar-toggle" id="sidebarToggle">≡</button>
+            </div>
+            
+            <div class="sidebar-nav">
+                <a href="index.html" class="nav-link">🏠 Volver al Inicio</a>
+            </div>
+            
+            <div class="sidebar-content">
+                <h3>📚 Ejercicios</h3>
+                <ul class="exercise-list">
+                    <li class="exercise-item">
+                        <a href="exercise16.html" class="exercise-link" data-exercise="16">
+                            <span class="exercise-number">16</span>
+                            <div class="exercise-info">
+                                <span class="exercise-title">SSH Básico</span>
+                                <span class="exercise-description">Configurar acceso SSH en switch</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="exercise-item">
+                        <a href="exercise21.html" class="exercise-link" data-exercise="21">
+                            <span class="exercise-number">21</span>
+                            <div class="exercise-info">
+                                <span class="exercise-title">SSH Avanzado</span>
+                                <span class="exercise-description">Configuración completa con seguridad</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="exercise-item">
+                        <a href="exercise22.html" class="exercise-link" data-exercise="22">
+                            <span class="exercise-number">22</span>
+                            <div class="exercise-info">
+                                <span class="exercise-title">Verificación DNS</span>
+                                <span class="exercise-description">Resolver nombres con nslookup</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="exercise-item">
+                        <a href="exercise23.html" class="exercise-link" data-exercise="23">
+                            <span class="exercise-number">23</span>
+                            <div class="exercise-info">
+                                <span class="exercise-title">SSH Switch S1</span>
+                                <span class="exercise-description">SSH con dominio lab.local</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="exercise-item">
+                        <a href="exercise24.html" class="exercise-link active" data-exercise="24">
+                            <span class="exercise-number">24</span>
+                            <div class="exercise-info">
+                                <span class="exercise-title">Banner y Consola</span>
+                                <span class="exercise-description">Configurar banner y acceso</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="exercise-item">
+                        <a href="exercise25.html" class="exercise-link" data-exercise="25">
+                            <span class="exercise-number">25</span>
+                            <div class="exercise-info">
+                                <span class="exercise-title">SSH Router R1</span>
+                                <span class="exercise-description">SSH con dominio ccna.local</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="sidebar-footer">
+                    <div class="stats">
+                        <h4>📊 Estadísticas</h4>
+                        <div class="stat-item">
+                            <span>Ejercicios completados:</span>
+                            <span id="completedCount">0/6</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Promedio:</span>
+                            <span id="averageScore">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <div class="container">
+                <header>
+                    <div class="header-content">
+                        <a href="index.html" class="back-btn">← Inicio</a>
+                        <h1>🛡️ Banner y Consola</h1>
+                        <p>Configure banners de seguridad y acceso por consola en un switch Cisco</p>
+                    </div>
+                </header>
+
+                <div class="exercise-container">
+                    <div class="exercise-header">
+                        <h2>Ejercicio 24 – Configurar Banner y Consola</h2>
+                        <div class="difficulty-selector">
+                            <button id="easyMode" class="difficulty-btn active">🟢 Modo Fácil</button>
+                            <button id="hardMode" class="difficulty-btn">� Modo Difícil</button>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" id="progress"></div>
+                        </div>
+                        <p class="score">Puntuación: <span id="score">0</span>/5</p>
+                    </div>
+
+                    <div class="terminal-window">
+                        <div class="terminal-header">
+                            <div class="terminal-controls">
+                                <span class="control red"></span>
+                                <span class="control yellow"></span>
+                                <span class="control green"></span>
+                            </div>
+                            <span class="terminal-title">Cisco Switch Console</span>
+                        </div>
+                        
+                        <div class="terminal-content">
+                            <div class="command-line">
+                                <span class="prompt">S1(config)#</span>
+                                <span class="easy-text">banner motd #</span>
+                                <input type="text" class="command-input" data-answer="Acceso Autorizado Solamente" data-answer-hard="banner motd #Acceso Autorizado Solamente#" placeholder="__" id="input-1">
+                                <span class="easy-text">#</span>
+                                <span class="comment"># Banner MOTD</span>
+                                <span class="feedback" id="feedback-1"></span>
+                            </div>
+
+                            <div class="command-line">
+                                <span class="prompt">S1(config)#</span>
+                                <span class="easy-text">banner login #</span>
+                                <input type="text" class="command-input" data-answer="Ingrese credenciales" data-answer-hard="banner login #Ingrese credenciales#" placeholder="__" id="input-2">
+                                <span class="easy-text">#</span>
+                                <span class="comment"># Banner de login</span>
+                                <span class="feedback" id="feedback-2"></span>
+                            </div>
+
+                            <div class="command-line">
+                                <span class="prompt">S1(config)#</span>
+                                <span class="easy-text">line </span>
+                                <input type="text" class="command-input" data-answer="console" data-answer-hard="line console 0" placeholder="__" id="input-3">
+                                <span class="easy-text"> 0</span>
+                                <span class="comment"># Configurar consola</span>
+                                <span class="feedback" id="feedback-3"></span>
+                            </div>
+
+                            <div class="command-line">
+                                <span class="prompt">S1(config-line)#</span>
+                                <span class="easy-text">password </span>
+                                <input type="text" class="command-input" data-answer="cisco123" data-answer-hard="password cisco123" placeholder="__" id="input-4">
+                                <span class="comment"># Contraseña de consola</span>
+                                <span class="feedback" id="feedback-4"></span>
+                            </div>
+
+                            <div class="command-line">
+                                <span class="prompt">S1(config-line)#</span>
+                                <input type="text" class="command-input" data-answer="login" data-answer-hard="login" placeholder="__" id="input-5">
+                                <span class="comment"># Habilitar login</span>
+                                <span class="feedback" id="feedback-5"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <button id="checkAnswers" class="btn btn-primary">Verificar Respuestas</button>
+                        <button id="showHints" class="btn btn-secondary">Mostrar Pistas</button>
+                        <button id="reset" class="btn btn-danger">Reiniciar</button>
+                    </div>
+
+                    <div class="hints" id="hints" style="display: none;">
+                        <h3>💡 Pistas:</h3>
+                        <ul>
+                            <li><strong>Banner MOTD:</strong> "Acceso Autorizado Solamente"</li>
+                            <li><strong>Banner Login:</strong> "Ingrese credenciales"</li>
+                            <li><strong>Línea de consola:</strong> "console"</li>
+                            <li><strong>Contraseña:</strong> "cisco123"</li>
+                            <li><strong>Comando login:</strong> "login" para habilitar autenticación</li>
+                        </ul>
+                    </div>
+
+                    <div class="results" id="results" style="display: none;">
+                        <h3>🎉 ¡Resultados!</h3>
+                        <p id="finalScore"></p>
+                        <div id="mistakes"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="exercise24-script.js"></script>
+</body>
+</html>
